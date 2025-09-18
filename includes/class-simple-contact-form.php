@@ -36,9 +36,16 @@ class Simple_Contact_Form {
 		$success_message = is_string( $attributes['success_message'] ) ? sanitize_text_field( $attributes['success_message'] ) : sanitize_text_field( $defaults['success_message'] );
 		$css_class       = is_string( $attributes['css_class'] ) ? sanitize_text_field( $attributes['css_class'] ) : '';
 
-		$status      = self::get_query_param( 'sc_status' );
-		$error_code  = self::get_query_param( 'sc_error' );
-		$notice_html = self::prepare_notice( $status, $error_code, $success_message );
+		$status          = self::get_query_param( 'sc_status' );
+		$error_code      = self::get_query_param( 'sc_error' );
+		$success_payload = array();
+
+		if ( 'success' === $status ) {
+			$token           = self::get_query_param( 'sc_token' );
+			$success_payload = self::maybe_retrieve_success_data( $token );
+		}
+
+		$notice_html = self::prepare_notice( $status, $error_code, $success_message, $success_payload );
 
 		$classes = array( 'simple-contact-form' );
 		if ( '' !== $css_class ) {
@@ -83,12 +90,13 @@ class Simple_Contact_Form {
 	 * @param string $status          Submission status parameter.
 	 * @param string $error_code      Error code parameter.
 	 * @param string $success_message Success message attribute.
+	 * @param array  $success_payload  Sanitized submission data used for filters.
 	 *
 	 * @return string
 	 */
-	private static function prepare_notice( $status, $error_code, $success_message ) {
+	private static function prepare_notice( $status, $error_code, $success_message, array $success_payload ) {
 		if ( 'success' === $status ) {
-			$message = apply_filters( 'sc_success_message', $success_message, array() );
+			$message = apply_filters( 'sc_success_message', $success_message, $success_payload );
 			return esc_html( $message );
 		}
 
@@ -178,5 +186,64 @@ class Simple_Contact_Form {
 		$value = filter_input( INPUT_GET, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		return is_string( $value ) ? sanitize_text_field( $value ) : '';
+	}
+
+	/**
+	 * Retrieves stored success payload data after redirect.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $token Payload token.
+	 *
+	 * @return array
+	 */
+	private static function maybe_retrieve_success_data( $token ) {
+		if ( '' === $token ) {
+			return array();
+		}
+
+		$key = 'simple_contact_success_' . sanitize_key( $token );
+
+		$data = get_transient( $key );
+
+		if ( false !== $data ) {
+			delete_transient( $key );
+		}
+
+		if ( ! is_array( $data ) ) {
+			return array();
+		}
+
+		$sanitized = array();
+
+		if ( isset( $data['name'] ) ) {
+			$sanitized['name'] = sanitize_text_field( (string) $data['name'] );
+		}
+
+		if ( isset( $data['email'] ) ) {
+			$sanitized['email'] = sanitize_email( (string) $data['email'] );
+		}
+
+		if ( isset( $data['created_at'] ) ) {
+			$sanitized['created_at'] = sanitize_text_field( (string) $data['created_at'] );
+		}
+
+		if ( isset( $data['consent_ip'] ) && '' !== $data['consent_ip'] ) {
+			$validated_ip = filter_var( $data['consent_ip'], FILTER_VALIDATE_IP );
+
+			if ( false !== $validated_ip ) {
+				$sanitized['consent_ip'] = sanitize_text_field( $validated_ip );
+			}
+		}
+
+		if ( isset( $data['user_agent'] ) ) {
+			$sanitized['user_agent'] = sanitize_text_field( (string) $data['user_agent'] );
+		}
+
+		if ( isset( $data['insert_id'] ) ) {
+			$sanitized['insert_id'] = absint( $data['insert_id'] );
+		}
+
+		return $sanitized;
 	}
 }

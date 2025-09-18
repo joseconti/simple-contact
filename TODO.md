@@ -8,6 +8,8 @@
 - Prepare automated QA checklist for future releases.
 
 ## Completed
+- Implement transient-backed success payload so `sc_success_message` receives sanitized submission data.
+- Normalize success payload data to expose human-readable IP addresses to filters.
 - Scaffold plugin structure for Simple Contact Shortcode & Block.
 - Implement contact form shortcode and Gutenberg block.
 - Add database schema migration and uninstall cleanup.

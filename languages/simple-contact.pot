@@ -1,84 +1,89 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple Contact Shortcode & Block 1.0.0\n"
-"POT-Creation-Date: 2024-01-01 00:00:00+00:00\n"
+"POT-Creation-Date: 2025-09-18 16:36:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Codex Agent\n"
 
-#: includes/class-sc-form.php
+#: includes/class-simple-contact-form.php:31
 msgid "Thank you for contacting us. We will get back to you soon."
 msgstr ""
 
-#: includes/class-sc-form.php
+#: includes/class-simple-contact-form.php:66
+#: includes/class-simple-contact-form-handler.php:170
 msgid "Name"
 msgstr ""
 
-#: includes/class-sc-form.php
+#: includes/class-simple-contact-form.php:70
+#: includes/class-simple-contact-form-handler.php:172
 msgid "Email"
 msgstr ""
 
-#: includes/class-sc-form.php
+#: includes/class-simple-contact-form.php:77
 msgid "Send"
 msgstr ""
 
-#: includes/class-sc-form.php
+#: includes/class-simple-contact-form.php:108
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: includes/class-sc-form.php
+#: includes/class-simple-contact-form.php:111
 msgid "Please fill in both your name and email."
 msgstr ""
 
-#: includes/class-sc-form.php
+#: includes/class-simple-contact-form.php:114
 msgid "Security check failed. Please try again."
 msgstr ""
 
-#: includes/class-sc-form.php
+#: includes/class-simple-contact-form.php:117
+#: includes/class-simple-contact-form.php:120
 msgid "We could not process your request. Please try again."
 msgstr ""
 
-#: includes/class-sc-form-handler.php
+#: includes/class-simple-contact-form-handler.php:164
 msgid "New contact form submission"
 msgstr ""
 
-#: includes/class-sc-form-handler.php
+#: includes/class-simple-contact-form-handler.php:169
 msgid "You have received a new contact form submission."
 msgstr ""
 
-#: includes/class-sc-form-handler.php
+#: includes/class-simple-contact-form-handler.php:174
 msgid "Entry ID"
 msgstr ""
 
-#: assets/js/block.js
+#: assets/js/block.js:23
+#: assets/js/block.js:78
 msgid "Simple Contact Form"
 msgstr ""
 
-#: assets/js/block.js
+#: assets/js/block.js:24
 msgid "Display a simple contact form that stores submissions and emails the site administrator."
 msgstr ""
 
-#: assets/js/block.js
+#: assets/js/block.js:50
 msgid "Form Settings"
 msgstr ""
 
-#: assets/js/block.js
+#: assets/js/block.js:54
 msgid "Success message"
 msgstr ""
 
-#: assets/js/block.js
+#: assets/js/block.js:55
 msgid "Optional message displayed after a successful submission."
 msgstr ""
 
-#: assets/js/block.js
+#: assets/js/block.js:65
 msgid "Additional CSS classes"
 msgstr ""
 
-#: assets/js/block.js
+#: assets/js/block.js:66
 msgid "Space separated list of classes added to the form wrapper."
 msgstr ""
 
-#: assets/js/block.js
+#: assets/js/block.js:79
 msgid "The form will be rendered on the front end."
 msgstr ""
+
