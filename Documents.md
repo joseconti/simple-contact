@@ -17,6 +17,7 @@ The plugin is organized into modular classes under the `includes/` directory:
 - `class-simple-contact-installer.php`: Handles database migrations via the activation hook and provides `maybe_upgrade_schema()`.
 - `class-simple-contact-form.php`: Renders the contact form markup shared by the shortcode and block.
 - `class-simple-contact-form-handler.php`: Processes submissions, sanitizes input, persists records, and dispatches notification emails.
+- `class-simple-contact-notification.php`: Composes the notification message and triggers `wp_mail()` with filtered headers, recipient, and subject.
 - `class-simple-contact-shortcode.php`: Registers the `[simple_contact]` shortcode and delegates rendering to the shared form renderer.
 - `class-simple-contact-block.php`: Registers the Gutenberg block `simple-contact/form` with server-side rendering using the shared form renderer.
 
@@ -85,6 +86,7 @@ Source control hygiene ensures release archives remain focused on runtime necess
 ### Automated checks
 - Install dependencies with `composer install`.
 - Run coding standards via `composer phpcs`.
+- Execute unit tests with `composer test` to validate the notification delivery workflow using Brain Monkey.
 
 ### Manual checklist
 1. Activate the plugin and confirm the `{prefix}sc_contacts` table is created (verify via database inspection or tools like `wp db tables`).

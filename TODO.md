@@ -1,13 +1,14 @@
 # TODO
 
 ## Pending
-- Implement automated email testing strategy.
 - Create end-to-end tests for form submission workflow.
+- Add PHPUnit coverage for form handler redirect and error handling.
 
 ## In Progress
 - _None_.
 
 ## Completed
+- Implement automated email testing strategy.
 - Establish repository hygiene via project-level `.gitignore` and `.gitattributes` files to enforce clean distributions.
 - Implement transient-backed success payload so `sc_success_message` receives sanitized submission data.
 - Normalize success payload data to expose human-readable IP addresses to filters.

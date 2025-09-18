@@ -58,6 +58,7 @@ class Simple_Contact_Plugin {
 	private function load_dependencies() {
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-installer.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-form.php';
+		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-notification.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-form-handler.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-shortcode.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-block.php';
