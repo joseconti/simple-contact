@@ -90,7 +90,14 @@ class Simple_Contact_Form_Handler {
 		 */
 		do_action( 'sc_after_insert_contact', $insert_id, $data );
 
-		self::redirect_with_status( 'success', '', $redirect_to );
+		$token      = self::stash_success_payload( $data, $insert_id );
+		$extra_args = array();
+
+		if ( '' !== $token ) {
+			$extra_args['sc_token'] = $token;
+		}
+
+		self::redirect_with_status( 'success', '', $redirect_to, $extra_args );
 	}
 
 	/**
@@ -218,10 +225,11 @@ class Simple_Contact_Form_Handler {
 	 * @param string $status       Either 'success' or 'error'.
 	 * @param string $code         Optional error code.
 	 * @param string $redirect_url Redirect destination.
+	 * @param array  $extra_args   Additional query parameters appended to the redirect.
 	 *
 	 * @return void
 	 */
-	private static function redirect_with_status( $status, $code = '', $redirect_url = '' ) {
+	private static function redirect_with_status( $status, $code = '', $redirect_url = '', array $extra_args = array() ) {
 		$redirect_url = '' === $redirect_url ? home_url() : $redirect_url;
 
 		$args = array( 'sc_status' => $status );
@@ -232,9 +240,94 @@ class Simple_Contact_Form_Handler {
 			$args['sc_error'] = false;
 		}
 
+		if ( ! empty( $extra_args ) ) {
+			foreach ( $extra_args as $extra_key => $extra_value ) {
+				if ( ! is_scalar( $extra_value ) ) {
+					continue;
+				}
+
+				$args[ sanitize_key( $extra_key ) ] = sanitize_text_field( (string) $extra_value );
+			}
+		}
+
 		$location = add_query_arg( $args, $redirect_url );
 
 		wp_safe_redirect( $location );
 		exit;
+	}
+
+	/**
+	 * Stores submission context for use after the redirect.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $data      Sanitized submission data.
+	 * @param int   $insert_id Inserted contact ID.
+	 *
+	 * @return string Token identifier or empty string on failure.
+	 */
+	private static function stash_success_payload( array $data, $insert_id ) {
+		if ( ! function_exists( 'wp_generate_uuid4' ) ) {
+			return '';
+		}
+
+		$token = wp_generate_uuid4();
+
+		if ( empty( $token ) ) {
+			return '';
+		}
+
+		$payload = array(
+			'name'       => isset( $data['name'] ) ? sanitize_text_field( (string) $data['name'] ) : '',
+			'email'      => isset( $data['email'] ) ? sanitize_email( (string) $data['email'] ) : '',
+			'created_at' => isset( $data['created_at'] ) ? sanitize_text_field( (string) $data['created_at'] ) : '',
+			'consent_ip' => self::format_ip_for_payload( isset( $data['consent_ip'] ) ? $data['consent_ip'] : null ),
+			'insert_id'  => (int) $insert_id,
+		);
+
+		if ( isset( $data['user_agent'] ) && '' !== $data['user_agent'] ) {
+			$payload['user_agent'] = sanitize_text_field( (string) $data['user_agent'] );
+		}
+
+		$key = 'simple_contact_success_' . sanitize_key( $token );
+
+		if ( false === set_transient( $key, $payload, MINUTE_IN_SECONDS ) ) {
+			return '';
+		}
+
+		return sanitize_key( $token );
+	}
+
+	/**
+	 * Converts the stored IP address into a human readable representation for filters.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string|null $packed_ip Packed binary IP address or null when unavailable.
+	 *
+	 * @return string
+	 */
+	private static function format_ip_for_payload( $packed_ip ) {
+		if ( empty( $packed_ip ) ) {
+			return '';
+		}
+
+		if ( ! function_exists( 'inet_ntop' ) ) {
+			return '';
+		}
+
+		$ip = inet_ntop( $packed_ip );
+
+		if ( false === $ip ) {
+			return '';
+		}
+
+		$validated = filter_var( $ip, FILTER_VALIDATE_IP );
+
+		if ( false === $validated ) {
+			return '';
+		}
+
+		return sanitize_text_field( $validated );
 	}
 }

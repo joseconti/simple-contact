@@ -13,12 +13,12 @@
 
 ## Architecture
 The plugin is organized into modular classes under the `includes/` directory:
-- `class-sc-plugin.php`: Boots the plugin, registers hooks, and loads translations.
-- `class-sc-installer.php`: Handles database migrations via the activation hook and provides `maybe_upgrade_schema()`.
-- `class-sc-form.php`: Renders the contact form markup shared by the shortcode and block.
-- `class-sc-form-handler.php`: Processes submissions, sanitizes input, persists records, and dispatches notification emails.
-- `class-sc-shortcode.php`: Registers the `[simple_contact]` shortcode and delegates rendering to the shared form renderer.
-- `class-sc-block.php`: Registers the Gutenberg block `simple-contact/form` with server-side rendering using the shared form renderer.
+- `class-simple-contact-plugin.php`: Boots the plugin, registers hooks, and loads translations.
+- `class-simple-contact-installer.php`: Handles database migrations via the activation hook and provides `maybe_upgrade_schema()`.
+- `class-simple-contact-form.php`: Renders the contact form markup shared by the shortcode and block.
+- `class-simple-contact-form-handler.php`: Processes submissions, sanitizes input, persists records, and dispatches notification emails.
+- `class-simple-contact-shortcode.php`: Registers the `[simple_contact]` shortcode and delegates rendering to the shared form renderer.
+- `class-simple-contact-block.php`: Registers the Gutenberg block `simple-contact/form` with server-side rendering using the shared form renderer.
 
 Assets live under `assets/` and currently include a vanilla JavaScript block implementation in `assets/js/block.js`. Translation templates are kept in `languages/simple-contact.pot`.
 
@@ -51,7 +51,7 @@ Schema updates are managed by `Simple_Contact_Installer::maybe_upgrade_schema()`
 - `sc_email_to( string $recipient, array $data )`: Filters the notification recipient email address.
 - `sc_email_subject( string $subject, array $data )`: Filters the notification subject line.
 - `sc_email_headers( array $headers, array $data )`: Filters the notification email headers.
-- `sc_success_message( string $message, array $data )`: Filters the success message shown to the user.
+- `sc_success_message( string $message, array $data )`: Filters the success message shown to the user. The `$data` array mirrors the sanitized submission (name, email, created_at, consent_ip, user_agent) and includes the `insert_id` when available via the post-redirect token. The `consent_ip` entry is provided as a human-readable IPv4 or IPv6 string when available.
 
 ## Shortcode Usage
 ```
@@ -71,7 +71,8 @@ Insert the **Simple Contact Form** block (`simple-contact/form`) from the Widget
 3. `Simple_Contact_Form_Handler` validates nonce, sanitizes input, and confirms email validity.
 4. Valid submissions are inserted into `{prefix}sc_contacts` with the visitor IP and user agent when present.
 5. Notification emails are sent to the site administrator. Filters allow customization of recipient, subject, and headers.
-6. Users are redirected back to the originating page with either a success or error query parameter to display feedback.
+6. Users are redirected back to the originating page with `sc_status` and, on failure, `sc_error` query parameters. Successful submissions also append an `sc_token` that references a short-lived transient containing the sanitized payload.
+7. The front-end renderer consumes the token, deletes the transient, and passes the payload (name, email, created_at, consent_ip, user_agent, insert_id) into the `sc_success_message` filter before escaping the message for display.
 
 ## Uninstall Behavior
 Deleting the plugin triggers `uninstall.php`, which loads the installer class, drops the custom table via `maybe_drop_table()`, and removes the stored schema version option.
