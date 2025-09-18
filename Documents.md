@@ -77,6 +77,9 @@ Insert the **Simple Contact Form** block (`simple-contact/form`) from the Widget
 ## Uninstall Behavior
 Deleting the plugin triggers `uninstall.php`, which loads the installer class, drops the custom table via `maybe_drop_table()`, and removes the stored schema version option.
 
+## Release Packaging
+Source control hygiene ensures release archives remain focused on runtime necessities. The repository root defines `.gitignore` to exclude development artifacts such as OS junk files, IDE project folders, compiled assets, dependency directories, and build outputs. A matching `.gitattributes` marks non-distribution resources (docs, tests, editor configs, build tooling) with `export-ignore` so generated ZIPs only contain executable plugin files (`simple-contact.php`, `uninstall.php`, `/includes/`, `/assets/`, `/languages/`).
+
 ## Testing & QA
 
 ### Automated checks

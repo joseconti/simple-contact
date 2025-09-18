@@ -8,6 +8,7 @@
 - _None_.
 
 ## Completed
+- Establish repository hygiene via project-level `.gitignore` and `.gitattributes` files to enforce clean distributions.
 - Implement transient-backed success payload so `sc_success_message` receives sanitized submission data.
 - Normalize success payload data to expose human-readable IP addresses to filters.
 - Scaffold plugin structure for Simple Contact Shortcode & Block.

@@ -1,4 +1,4 @@
-# OS
+# OS generated files
 .DS_Store
 .DS_Store?
 Thumbs.db
@@ -6,28 +6,28 @@ ehthumbs.db
 Icon?
 ._*
 
-# Editors
+# IDE directories
 .vscode/
 .idea/
 *.iml
 
-# Node / frontend
+# Node / frontend build artifacts
 node_modules/
 npm-debug.log*
 yarn-error.log
 dist/
 build/
 
-# PHP tooling
+# PHP / tooling
 vendor/
 composer.lock
 
-# Logs & temp
+# Logs and temporary files
 *.log
 *.tmp
 *.cache
 
-# Coverage
+# Coverage reports
 coverage/
 .clover
 .phpunit.result.cache
