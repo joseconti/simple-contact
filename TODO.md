@@ -5,7 +5,7 @@
 - Create end-to-end tests for form submission workflow.
 
 ## In Progress
-- Prepare automated QA checklist for future releases.
+- _None_.
 
 ## Completed
 - Implement transient-backed success payload so `sc_success_message` receives sanitized submission data.
@@ -17,3 +17,5 @@
 - Normalize indentation and bring all PHP files into compliance with WordPress Coding Standards.
 - Reformat Gutenberg block script to satisfy WordPress JavaScript coding standards.
 - Replace direct DROP TABLE query with `maybe_drop_table()` during uninstall for safer cleanup.
+- Prepare automated QA checklist for future releases.
+- Prevent redundant schema migrations by tracking stored versions and ensuring the contact table exists before updating.

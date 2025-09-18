@@ -35,7 +35,7 @@ The plugin creates a custom table named `{prefix}sc_contacts` with the following
 
 Indexes: `PRIMARY (id)`, `INDEX (email)`, `INDEX (created_at)`.
 
-Schema updates are managed by `Simple_Contact_Installer::maybe_upgrade_schema()` which records the schema version in the option `simple_contact_schema_version`.
+Schema updates are managed by `Simple_Contact_Installer::maybe_upgrade_schema()` which records the schema version in the option `simple_contact_schema_version` and only runs the migration when the stored version is outdated or the table is missing.
 
 ## Public APIs
 - Shortcode `[simple_contact]` with attributes:
@@ -78,6 +78,17 @@ Insert the **Simple Contact Form** block (`simple-contact/form`) from the Widget
 Deleting the plugin triggers `uninstall.php`, which loads the installer class, drops the custom table via `maybe_drop_table()`, and removes the stored schema version option.
 
 ## Testing & QA
-- Run `vendor/bin/phpcs --standard=WordPress --ignore=vendor .` to ensure coding standard compliance.
-- Manually verify form submission happy and error paths on the front end.
-- Confirm uninstall removes the database table and related options.
+
+### Automated checks
+- Install dependencies with `composer install`.
+- Run coding standards via `composer phpcs`.
+
+### Manual checklist
+1. Activate the plugin and confirm the `{prefix}sc_contacts` table is created (verify via database inspection or tools like `wp db tables`).
+2. Render the `[simple_contact]` shortcode and submit the form with missing fields to ensure validation errors display localized messages.
+3. Submit the form with valid data and confirm:
+   - The success notice appears with the configured message.
+   - A row is inserted into the custom table with name, email, timestamp, IP (when available), and user agent.
+   - Notification email is delivered to the administrator.
+4. Insert the `simple-contact/form` block in the editor, adjust inspector controls, and verify the configured attributes render correctly on the front end.
+5. Deactivate and uninstall the plugin to ensure the custom table and schema version option are removed.

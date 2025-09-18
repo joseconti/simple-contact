@@ -55,7 +55,14 @@ class Simple_Contact_Installer {
 	public static function maybe_upgrade_schema() {
 		global $wpdb;
 
-		$table_name      = $wpdb->prefix . 'sc_contacts';
+		$table_name       = $wpdb->prefix . 'sc_contacts';
+		$installed        = get_option( self::OPTION_KEY, '' );
+		$table_already_on = self::table_exists( $table_name );
+
+		if ( $table_already_on && is_string( $installed ) && version_compare( $installed, self::VERSION, '>=' ) ) {
+			return;
+		}
+
 		$charset_collate = $wpdb->get_charset_collate();
 		$sql             = "CREATE TABLE {$table_name} (\n" .
 			"\tid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,\n" .
@@ -73,7 +80,38 @@ class Simple_Contact_Installer {
 		// phpcs:ignore WordPress.DB.DirectDatabaseSchema,WordPress.DB.DirectDatabaseSchema.SchemaChange -- Schema creation handled via dbDelta is expected during installation.
 		dbDelta( $sql );
 
-		update_option( self::OPTION_KEY, self::VERSION );
+		if ( self::table_exists( $table_name ) ) {
+			update_option( self::OPTION_KEY, self::VERSION );
+		}
+	}
+
+	/**
+	 * Determines if the custom contact table already exists.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
+	 * @param string $table_name Fully qualified table name.
+	 *
+	 * @return bool
+	 */
+	private static function table_exists( $table_name ) {
+		global $wpdb;
+
+		if ( '' === $table_name ) {
+			return false;
+		}
+
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name );
+
+		if ( false === $query ) {
+			return false;
+		}
+
+		$result = $wpdb->get_var( $query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared -- Checking table existence during installation is safe without caching and the statement is prepared above.
+
+		return $table_name === $result;
 	}
 
 	/**
