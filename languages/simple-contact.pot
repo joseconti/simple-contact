@@ -1,0 +1,84 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Contact Shortcode & Block 1.0.0\n"
+"POT-Creation-Date: 2024-01-01 00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Codex Agent\n"
+
+#: includes/class-sc-form.php
+msgid "Thank you for contacting us. We will get back to you soon."
+msgstr ""
+
+#: includes/class-sc-form.php
+msgid "Name"
+msgstr ""
+
+#: includes/class-sc-form.php
+msgid "Email"
+msgstr ""
+
+#: includes/class-sc-form.php
+msgid "Send"
+msgstr ""
+
+#: includes/class-sc-form.php
+msgid "Please provide a valid email address."
+msgstr ""
+
+#: includes/class-sc-form.php
+msgid "Please fill in both your name and email."
+msgstr ""
+
+#: includes/class-sc-form.php
+msgid "Security check failed. Please try again."
+msgstr ""
+
+#: includes/class-sc-form.php
+msgid "We could not process your request. Please try again."
+msgstr ""
+
+#: includes/class-sc-form-handler.php
+msgid "New contact form submission"
+msgstr ""
+
+#: includes/class-sc-form-handler.php
+msgid "You have received a new contact form submission."
+msgstr ""
+
+#: includes/class-sc-form-handler.php
+msgid "Entry ID"
+msgstr ""
+
+#: assets/js/block.js
+msgid "Simple Contact Form"
+msgstr ""
+
+#: assets/js/block.js
+msgid "Display a simple contact form that stores submissions and emails the site administrator."
+msgstr ""
+
+#: assets/js/block.js
+msgid "Form Settings"
+msgstr ""
+
+#: assets/js/block.js
+msgid "Success message"
+msgstr ""
+
+#: assets/js/block.js
+msgid "Optional message displayed after a successful submission."
+msgstr ""
+
+#: assets/js/block.js
+msgid "Additional CSS classes"
+msgstr ""
+
+#: assets/js/block.js
+msgid "Space separated list of classes added to the form wrapper."
+msgstr ""
+
+#: assets/js/block.js
+msgid "The form will be rendered on the front end."
+msgstr ""
