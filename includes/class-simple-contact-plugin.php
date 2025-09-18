@@ -50,6 +50,21 @@ class Simple_Contact_Plugin {
 	}
 
 	/**
+	 * Registers core WordPress hooks for the plugin lifecycle.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	private function register_hooks() {
+		register_activation_hook( SIMPLE_CONTACT_PLUGIN_FILE, array( 'Simple_Contact_Installer', 'activate' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+		add_action( 'init', array( 'Simple_Contact_Shortcode', 'register' ) );
+		add_action( 'init', array( 'Simple_Contact_Block', 'register' ) );
+		add_action( 'init', array( 'Simple_Contact_Form_Handler', 'register' ) );
+	}
+
+	/**
 	 * Loads the PHP dependencies.
 	 *
 	 * @since 1.0.0
