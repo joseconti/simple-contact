@@ -5,10 +5,20 @@
     "license": "GPL-2.0-or-later",
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.7",
-        "wp-coding-standards/wpcs": "^3.0"
+        "wp-coding-standards/wpcs": "^3.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpunit/phpunit": "^9.6",
+        "brain/monkey": "^2.6",
+        "yoast/phpunit-polyfills": "^2.0"
     },
     "scripts": {
-        "phpcs": "phpcs --standard=WordPress --ignore=vendor ."
+        "phpcs": "phpcs --standard=WordPress --ignore=vendor,tests .",
+        "test": "phpunit"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SimpleContact\\Tests\\": "tests/phpunit/"
+        }
     },
     "config": {
         "allow-plugins": {

@@ -78,7 +78,7 @@ class Simple_Contact_Form_Handler {
 			self::redirect_with_status( 'error', 'database', $redirect_to );
 		}
 
-		self::send_notification( $data, $insert_id );
+		self::dispatch_notification( $data, $insert_id );
 
 		/**
 		 * Fires after a contact entry is inserted.
@@ -151,7 +151,7 @@ class Simple_Contact_Form_Handler {
 	}
 
 	/**
-	 * Sends the admin notification email.
+	 * Dispatches the notification email via the notification service.
 	 *
 	 * @since 1.0.0
 	 *
@@ -160,23 +160,9 @@ class Simple_Contact_Form_Handler {
 	 *
 	 * @return void
 	 */
-	private static function send_notification( array $data, $insert_id ) {
-		$to      = apply_filters( 'sc_email_to', get_option( 'admin_email' ), $data );
-		$subject = apply_filters( 'sc_email_subject', __( 'New contact form submission', 'simple-contact' ), $data );
-		$headers = apply_filters( 'sc_email_headers', array( 'Content-Type: text/plain; charset=UTF-8' ), $data );
-
-		$message_body = sprintf(
-			"%s\n\n%s: %s\n%s: %s\n%s: %d",
-			__( 'You have received a new contact form submission.', 'simple-contact' ),
-			__( 'Name', 'simple-contact' ),
-			$data['name'],
-			__( 'Email', 'simple-contact' ),
-			$data['email'],
-			__( 'Entry ID', 'simple-contact' ),
-			$insert_id
-		);
-
-		wp_mail( $to, $subject, $message_body, $headers );
+	private static function dispatch_notification( array $data, $insert_id ) {
+		$notification = new Simple_Contact_Notification();
+		$notification->send( $data, $insert_id );
 	}
 
 	/**
