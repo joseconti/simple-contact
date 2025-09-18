@@ -87,6 +87,7 @@ Source control hygiene ensures release archives remain focused on runtime necess
 - Install dependencies with `composer install`.
 - Run coding standards via `composer phpcs`.
 - Execute unit tests with `composer test` to validate the notification delivery workflow using Brain Monkey.
+- Form handler PHPUnit coverage validates nonce enforcement, validation errors, persistence, and redirect token generation.
 
 ### Manual checklist
 1. Activate the plugin and confirm the `{prefix}sc_contacts` table is created (verify via database inspection or tools like `wp db tables`).
