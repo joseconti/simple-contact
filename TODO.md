@@ -1,12 +1,13 @@
 # TODO
 
 ## Pending
-- Create end-to-end tests for form submission workflow.
+- _None_.
 
 ## In Progress
 - _None_.
 
 ## Completed
+- Enrich notification emails with submission metadata and expose the `sc_email_message` filter for customization.
 - Add PHPUnit coverage for form handler redirect and error handling.
 - Implement automated email testing strategy.
 - Establish repository hygiene via project-level `.gitignore` and `.gitattributes` files to enforce clean distributions.
@@ -21,3 +22,4 @@
 - Replace direct DROP TABLE query with `maybe_drop_table()` during uninstall for safer cleanup.
 - Prepare automated QA checklist for future releases.
 - Prevent redundant schema migrations by tracking stored versions and ensuring the contact table exists before updating.
+- Create end-to-end tests for form submission workflow.

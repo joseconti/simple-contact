@@ -4,6 +4,7 @@
  *
  * @package SimpleContact
  * @since 1.0.0
+ * @author Codex
  */
 
 /**

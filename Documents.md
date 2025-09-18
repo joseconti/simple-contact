@@ -17,7 +17,7 @@ The plugin is organized into modular classes under the `includes/` directory:
 - `class-simple-contact-installer.php`: Handles database migrations via the activation hook and provides `maybe_upgrade_schema()`.
 - `class-simple-contact-form.php`: Renders the contact form markup shared by the shortcode and block.
 - `class-simple-contact-form-handler.php`: Processes submissions, sanitizes input, persists records, and dispatches notification emails.
-- `class-simple-contact-notification.php`: Composes the notification message and triggers `wp_mail()` with filtered headers, recipient, and subject.
+- `class-simple-contact-notification.php`: Composes the notification message (including timestamp, IP address, and user agent when available) and triggers `wp_mail()` with filtered headers, recipient, subject, and body content.
 - `class-simple-contact-shortcode.php`: Registers the `[simple_contact]` shortcode and delegates rendering to the shared form renderer.
 - `class-simple-contact-block.php`: Registers the Gutenberg block `simple-contact/form` with server-side rendering using the shared form renderer.
 
@@ -52,6 +52,7 @@ Schema updates are managed by `Simple_Contact_Installer::maybe_upgrade_schema()`
 - `sc_email_to( string $recipient, array $data )`: Filters the notification recipient email address.
 - `sc_email_subject( string $subject, array $data )`: Filters the notification subject line.
 - `sc_email_headers( array $headers, array $data )`: Filters the notification email headers.
+- `sc_email_message( string $message, array $data )`: Filters the composed notification email body. The `$data` array contains sanitized submission context including `name`, `email`, `created_at`, `consent_ip`, `user_agent`, and `insert_id`.
 - `sc_success_message( string $message, array $data )`: Filters the success message shown to the user. The `$data` array mirrors the sanitized submission (name, email, created_at, consent_ip, user_agent) and includes the `insert_id` when available via the post-redirect token. The `consent_ip` entry is provided as a human-readable IPv4 or IPv6 string when available.
 
 ## Shortcode Usage
@@ -71,7 +72,7 @@ Insert the **Simple Contact Form** block (`simple-contact/form`) from the Widget
 2. On submission, WordPress routes the request through the `admin_post` endpoints.
 3. `Simple_Contact_Form_Handler` validates nonce, sanitizes input, and confirms email validity.
 4. Valid submissions are inserted into `{prefix}sc_contacts` with the visitor IP and user agent when present.
-5. Notification emails are sent to the site administrator. Filters allow customization of recipient, subject, and headers.
+5. Notification emails are sent to the site administrator. Filters allow customization of recipient, subject, headers, and the composed message body.
 6. Users are redirected back to the originating page with `sc_status` and, on failure, `sc_error` query parameters. Successful submissions also append an `sc_token` that references a short-lived transient containing the sanitized payload.
 7. The front-end renderer consumes the token, deletes the transient, and passes the payload (name, email, created_at, consent_ip, user_agent, insert_id) into the `sc_success_message` filter before escaping the message for display.
 
@@ -88,6 +89,8 @@ Source control hygiene ensures release archives remain focused on runtime necess
 - Run coding standards via `composer phpcs`.
 - Execute unit tests with `composer test` to validate the notification delivery workflow using Brain Monkey.
 - Form handler PHPUnit coverage validates nonce enforcement, validation errors, persistence, and redirect token generation.
+- End-to-end PHPUnit coverage simulates a successful submission from POST handling through notice rendering, ensuring transient
+  payloads hydrate the `sc_success_message` filter and final markup.
 
 ### Manual checklist
 1. Activate the plugin and confirm the `{prefix}sc_contacts` table is created (verify via database inspection or tools like `wp db tables`).

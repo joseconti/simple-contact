@@ -4,6 +4,7 @@
  *
  * @package SimpleContact
  * @since 1.0.0
+ * @author Codex
  */
 
 /**
@@ -173,7 +174,7 @@ class Simple_Contact_Form_Handler {
 	 * @return string|null Packed binary address or null if unavailable.
 	 */
 	private static function get_packed_ip() {
-		$ip = filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
+		$ip = simple_contact_filter_input( INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP );
 
 		if ( empty( $ip ) ) {
 			return null;
@@ -192,7 +193,7 @@ class Simple_Contact_Form_Handler {
 	 * @return string|null Sanitized user agent or null when absent.
 	 */
 	private static function get_user_agent() {
-		$agent = filter_input( INPUT_SERVER, 'HTTP_USER_AGENT', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$agent = simple_contact_filter_input( INPUT_SERVER, 'HTTP_USER_AGENT', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		if ( empty( $agent ) ) {
 			return null;
