@@ -1,0 +1,33 @@
+# OS
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Icon?
+._*
+
+# Editors
+.vscode/
+.idea/
+*.iml
+
+# Node / frontend
+node_modules/
+npm-debug.log*
+yarn-error.log
+dist/
+build/
+
+# PHP tooling
+vendor/
+composer.lock
+
+# Logs & temp
+*.log
+*.tmp
+*.cache
+
+# Coverage
+coverage/
+.clover
+.phpunit.result.cache
