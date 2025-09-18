@@ -4,6 +4,7 @@
  *
  * @package SimpleContact
  * @since 1.0.0
+ * @author Codex
  */
 
 /**
@@ -56,30 +57,13 @@ class Simple_Contact_Plugin {
 	 * @return void
 	 */
 	private function load_dependencies() {
+		require_once SIMPLE_CONTACT_PATH . 'includes/simple-contact-helpers.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-installer.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-form.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-notification.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-form-handler.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-shortcode.php';
 		require_once SIMPLE_CONTACT_PATH . 'includes/class-simple-contact-block.php';
-	}
-
-	/**
-	 * Registers WordPress hooks.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	private function register_hooks() {
-		register_activation_hook( SIMPLE_CONTACT_PLUGIN_FILE, array( 'Simple_Contact_Installer', 'activate' ) );
-		register_uninstall_hook( SIMPLE_CONTACT_PLUGIN_FILE, array( 'Simple_Contact_Installer', 'uninstall' ) );
-
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-		add_action( 'init', array( 'Simple_Contact_Shortcode', 'register' ) );
-		add_action( 'init', array( 'Simple_Contact_Block', 'register' ) );
-
-		Simple_Contact_Form_Handler::register();
 	}
 
 	/**

@@ -29,6 +29,7 @@ abstract class TestCase extends PHPUnitTestCase {
         protected function setUp(): void {
                 parent::setUp();
                 Monkey\setUp();
+                require_once dirname( __DIR__, 2 ) . '/includes/simple-contact-helpers.php';
         }
 
         /**

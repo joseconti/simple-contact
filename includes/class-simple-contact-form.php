@@ -4,6 +4,7 @@
  *
  * @package SimpleContact
  * @since 1.0.0
+ * @author Codex
  */
 
 /**
@@ -161,8 +162,8 @@ class Simple_Contact_Form {
 	 * @return string
 	 */
 	private static function get_current_url() {
-		$host = filter_input( INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$uri  = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$host = simple_contact_filter_input( INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$uri  = simple_contact_filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		if ( empty( $host ) || empty( $uri ) ) {
 			return home_url();
@@ -183,7 +184,7 @@ class Simple_Contact_Form {
 	 * @return string
 	 */
 	private static function get_query_param( $key ) {
-		$value = filter_input( INPUT_GET, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$value = simple_contact_filter_input( INPUT_GET, $key, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		return is_string( $value ) ? sanitize_text_field( $value ) : '';
 	}
